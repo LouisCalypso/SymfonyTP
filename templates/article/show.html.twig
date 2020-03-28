@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Louis Blog</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{{ absolute_url(asset('vendor/fontawesome-free/css/all.min.css')) }}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link href="{{ asset('css/clean-blog.min.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+{% include 'layout/navbar.html.twig' %}
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{ asset(articles.getImage()) }}')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="post-heading">
+                    <h1>{{ articles.getTitle() }}</h1>
+                    <h2 class="subheading">{{ articles.getSubtitle() }}</h2>
+                    <span class="meta">Posted by
+              <a href="#">{{ articles.getAuthor() }}</a>
+              {{ articles.getCreatedAt()|date("d/m/y h:m") }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <p>{{ articles.getBody() }}</p>
+            </div>
+        </div>
+    </div>
+</article>
+
+<hr>
+
+<div class="container">
+    <div class="row">
+        <h3 class="col-lg-8 col-md-10 mx-auto">{{ articles.countComments() }} Comments</h3>
+    </div>
+
+    <!-- Comments Form -->
+    <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="card my-4">
+            <h5 class="card-header">Leave a Comment:</h5>
+            <div class="card-body">
+                {% form_theme commentForm 'bootstrap_4_horizontal_layout.html.twig' %}
+                {{ form_start(commentForm, {attr: {'novalidate': 'novalidate'}}) }}
+                {{ form_row(commentForm.name) }}
+                {{ form_row(commentForm.email) }}
+                {{ form_row(commentForm.comment ) }}
+                <button type="submit" class="btn btn-secondary">Submit</button>
+                {{ form_end(commentForm) }}
+
+            </div>
+        </div>
+    </div>
+
+    {%  for comment in articles.getComments() %}
+        <div class="row">
+            <div class="media mb-4 mt-4 col-lg-8 col-md-10 mx-auto">
+                <div class="media-body">
+                    <h5 class="mt-0">{{ comment.getName() }}<small> {{ comment.getCreatedAt()|date("d/m/y h:m") }}</small></h5>
+                    <blockquote>{{ comment.getComment() }}</blockquote>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% include 'layout/footer.html.twig' %}
+
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom scripts for this template -->
+<script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
